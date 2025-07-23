@@ -49,7 +49,8 @@ int	is_delete(char *env, char **delete_var)
 	while (delete_var[++i])
 	{
 		env_lenght = ft_strlen(delete_var[i]);
-		if (ft_strncmp(env, delete_var[i], env_lenght) == 0)
+		if (ft_strncmp(env, delete_var[i], env_lenght) == 0
+			&& env[env_lenght] == '=')
 			return (1);
 	}
 	return (0);
@@ -88,7 +89,7 @@ t_env	*ft_unset(t_env *env, char **delete_var)
 		found_var += is_delete(env->env[i], delete_var);
 	if (found_var == 0)
 		return (env);
-	new_env = malloc(sizeof(char *) * (i - found_var) + 1);
+	new_env = malloc(sizeof(char *) * (i - found_var + 1));
 	if (!new_env)
 		return (env);
 	new_env = fill_new_env(env, delete_var, new_env);
