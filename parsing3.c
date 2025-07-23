@@ -31,7 +31,7 @@ void	prepare_args(t_parsing *parsing, t_token *lexer)
 	parsing[0].count = j;
 }
 
-int    expand_string_if_needed(t_token *tok, char **env)
+int	expand_string_if_needed(t_token *tok, char **env)
 {
 	char	*tmp;
 

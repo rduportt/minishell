@@ -44,3 +44,23 @@ char	*assemble_result(char *string, char *env_value, int i, int *j)
 	result[k] = '\0';
 	return (result);
 }
+
+int	expand_string_if_needed_heredoc(char **string, char **env)
+{
+	char	*tmp;
+
+	while (is_dollar(*string))
+	{
+		tmp = string_env(*string, env);
+		if (!tmp)
+			return (0);
+		if (ft_strcmp(tmp, *string) == 0)
+		{
+			free(tmp);
+			break ;
+		}
+		free(*string);
+		*string = tmp;
+	}
+	return (1);
+}

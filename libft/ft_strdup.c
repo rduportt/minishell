@@ -32,14 +32,13 @@ char	*ft_strdup(const char *source)
 	return (dup);
 }
 
-char    *ft_strdup_export(const char *source)
+char	*ft_strdup_export(const char *source)
 {
 	int		i;
 	char	*dup;
 
 	if (ft_strncmp(source, "declare -x ", 11) == 0)
 		return (ft_strdup(source));
-
 	dup = ft_calloc(ft_strlen(source) + 12, sizeof(char));
 	if (!dup)
 		return (NULL);

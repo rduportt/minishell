@@ -14,7 +14,8 @@
 
 int	check_built_in(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2])
 {
-	if ((parsing[i].builtin_code == 1 || parsing[i].builtin_code > 5) || (parsing[i].builtin_code == 5 && parsing[i].arg[1]))
+	if ((parsing[i].builtin_code == 1 || parsing[i].builtin_code > 5)
+		|| (parsing[i].builtin_code == 5 && parsing[i].arg[1]))
 	{
 		envp = exec_builtin(&parsing[i], envp, i, pipes);
 		return (1);
@@ -24,52 +25,40 @@ int	check_built_in(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2])
 	return (0);
 }
 
-void cleanup_pipes(int (**pipes)[2], t_parsing *parsing)
+int	init_process_command(t_parsing *parsing,
+		t_env *envp, int (*pipes)[2], int i)
 {
-    if (*pipes && parsing) {
-        close_all_pipes(*pipes, parsing[0].count - 1);
-        free(*pipes);
-        *pipes = NULL;
-    }
-}
-
-int	process_command(t_parsing *parsing, t_env *envp, int (*pipes)[2], int i)
-{
-	t_count	count;
-	int		buffer;
-
-	count = count_init();
+	parsing[0].countt = count_init();
 	if (!parsing[i].cmd)
-		return (handle_empty_cmd(parsing, count, i));
+		return (handle_empty_cmd(parsing, i));
 	if (check_built_in(parsing, envp, i, pipes) == 1)
 		return (1);
 	if (parsing[0].pid == -1)
 		return (-1);
+	return (0);
+}
+
+int	process_command(t_parsing *parsing, t_env *envp, int (*pipes)[2], int i)
+{
+	int		buffer;
+
+	buffer = init_process_command(parsing, envp, pipes, i);
+	if (buffer != 0)
+		return (buffer);
 	if (parsing[0].pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		handle_child_process(parsing, count, &pipes, i);
-		if ((parsing[i].builtin_code <= 4 || (parsing[i].builtin_code == 5 && !parsing[i].arg[1])) && parsing[i].builtin_code != 0)
+		handle_child_process(parsing, &pipes, i, envp);
+		if ((parsing[i].builtin_code <= 4 || (parsing[i].builtin_code == 5
+					&& !parsing[i].arg[1])) && parsing[i].builtin_code != 0)
 		{
 			envp = exec_builtin(&parsing[i], envp, i, pipes);
 			buffer = parsing[i].exit_status;
-			if (envp->env)
-				free_tab(envp->env);
-			if (envp->export)
-				free_tab(envp->export);
-			free(envp);
-			if (pipes)
-			{
-				close_all_pipes(pipes, parsing[0].count - 1);
-				free(pipes);
-				pipes = NULL;
-			}
-			free_parsing(parsing);
-			close(0);
-			close(1);
-			close(2);
+			free_all(parsing, envp, pipes);
 			exit(buffer);
+			rl_on_new_line();
+			rl_redisplay();
 		}
 		else
 			handle_exec(parsing, envp, i, pipes);
@@ -114,7 +103,6 @@ int	prepare_commands(t_parsing *parsing, t_env *envp)
 	{
 		parsing[0].pid = 0;
 		parsing[i].cmd_path = NULL;
-		
 		parsing[i].builtin_code = is_built_in(parsing[i].cmd);
 		if (parsing[i].builtin_code == 0)
 		{
@@ -129,4 +117,41 @@ int	prepare_commands(t_parsing *parsing, t_env *envp)
 		i++;
 	}
 	return (1);
+}
+
+void	free_all_heredoc(t_parsing *parsing, t_env *env, int (**pipes)[2])
+{
+	if (*pipes)
+	{
+		close_all_pipes(*pipes, parsing[0].count - 1);
+		free(*pipes);
+		*pipes = NULL;
+	}
+	if (env->env)
+		free_tab(env->env);
+	if (env->export)
+		free_tab(env->export);
+	free(env);
+	close(1);
+	close(2);
+	free_parsing(parsing);
+}
+
+void	free_all(t_parsing *parsing, t_env *env, int (*pipes)[2])
+{
+	if (pipes)
+	{
+		close_all_pipes(pipes, parsing[0].count - 1);
+		free(pipes);
+		pipes = NULL;
+	}
+	if (env->env)
+		free_tab(env->env);
+	if (env->export)
+		free_tab(env->export);
+	free(env);
+	close(0);
+	close(1);
+	close(2);
+	free_parsing(parsing);
 }

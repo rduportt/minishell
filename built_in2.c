@@ -102,44 +102,16 @@ int	ft_exit(t_env *env, int (*pipes)[2], t_parsing *parsing, char **param)
 {
 	int	code;
 
-	printf("exit");
+	printf("exit\n");
 	if (!param || !param[0])
 	{
-		if (pipes)
-		{
-			close_all_pipes(pipes, parsing[0].count - 1);
-			free(pipes);
-			pipes = NULL;
-		}
-		free_parsing(parsing);
-		if (env->env)
-			free_tab(env->env);
-		if (env->export)
-			free_tab(env->export);
-		free(env);
-		close(0);
-		close(1);
-		close(2);
+		free_all(parsing, env, pipes);
 		exit(0);
 	}
 	if (is_numeric(param[0]) == 0)
 	{
 		printf("minishell: exit: %s: numeric argument required\n", param[0]);
-		if (pipes)
-		{
-			close_all_pipes(pipes, parsing[0].count - 1);
-			free(pipes);
-			pipes = NULL;
-		}
-		free_parsing(parsing);
-		if (env->env)
-			free_tab(env->env);
-		if (env->export)
-			free_tab(env->export);
-		free(env);
-		close(0);
-		close(1);
-		close(2);
+		free_all(parsing, env, pipes);
 		exit(2);
 	}
 	if (param[1])
@@ -148,20 +120,6 @@ int	ft_exit(t_env *env, int (*pipes)[2], t_parsing *parsing, char **param)
 		return (1);
 	}
 	code = ft_atoi(param[0]);
-	if (pipes)
-	{
-		close_all_pipes(pipes, parsing[0].count - 1);
-		free(pipes);
-		pipes = NULL;
-	}
-	free_parsing(parsing);
-	if (env->env)
-		free_tab(env->env);
-	if (env->export)
-		free_tab(env->export);
-	free(env);
-	close(0);
-	close(1);
-	close(2);
+	free_all(parsing, env, pipes);
 	exit(code % 256);
 }

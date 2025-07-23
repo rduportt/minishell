@@ -72,7 +72,7 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*ft_strcpy(char *dest, char *src);
 char	*ft_strcat(char *dest, char *src);
-char    *ft_strdup_export(const char *source);
+char	*ft_strdup_export(const char *source);
 int		ft_strncmp_export(const char *first, const char *second, size_t length);
 size_t	ft_strlen_char(const char *string, char c);
 char	*ft_strdup_quote(const char *source);

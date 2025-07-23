@@ -41,6 +41,8 @@ t_env	*exec_builtin(t_parsing *parsing, t_env *env, int i, int (*pipes)[2])
 		parsing->exit_status = echo(parsing->arg);
 	else if (parsing->builtin_code == 4)
 		parsing->exit_status = display_env(env->env);
+	else if (parsing->builtin_code == 5 && !parsing[i].arg[1])
+		parsing->exit_status = display_env(env->export);
 	else if (parsing->builtin_code == 5)
 		env = ft_export(env, &parsing->arg[1], parsing);
 	else if (parsing->builtin_code == 6)
@@ -76,7 +78,6 @@ void	wait_for_children(t_parsing *parsing, int i, int status)
 				|| parsing[i].builtin_code >= 5))
 		{
 			waitpid(-1, &status, 0);
-
 			if (WIFSIGNALED(status))
 			{
 				sig = WTERMSIG(status);

@@ -46,7 +46,7 @@ t_env	*init_env_i(t_env *env)
 	return (env);
 }
 
-t_env    *fill_env(t_env *env, int count, char **envp)
+t_env	*fill_env(t_env *env, int count, char **envp)
 {
 	int	i;
 
@@ -94,6 +94,7 @@ int	display_env(char **env)
 	int	i;
 
 	i = 0;
+	write(STDOUT_FILENO, "\n", 1);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "?=", 2) != 0)

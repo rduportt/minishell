@@ -32,3 +32,11 @@ void	handler_heredoc(int num)
 		printf("\nMinishell>");
 	}
 }
+
+void	handler_heredoc_cmd(int sig)
+{
+	(void)sig;
+	g_child_pid = 130;
+	printf("\n");
+	close(STDIN_FILENO);
+}

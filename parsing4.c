@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char    *string_env(char *string, char **env)
+char	*string_env(char *string, char **env)
 {
-	char    *env_value;
-	char    *result;
-	int        i;
-	int        j;
-	int        quote;
+	char	*env_value;
+	char	*result;
+	int		i;
+	int		j;
+	int		quote;
 
 	quote = 0;
 	i = 0;

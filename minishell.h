@@ -103,6 +103,7 @@ typedef struct parsing
 	int		exit_status;
 	int		builtin_code;
 	int		count;
+	t_count	countt;
 }t_parsing;
 
 int			any_word(t_token *lexer);
@@ -144,20 +145,23 @@ t_env		*exec_builtin(t_parsing *parsing, t_env *env, int i,
 void		close_all_pipes(int (*pipes)[2], int nb_pipes);
 void		wait_for_children(t_parsing *parsing, int i, int status);
 int			init_pipes(int (**pipes)[2], t_parsing *parsing);
-void		handle_heredoc_no_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_append_no_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_infile_no_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_outile_no_cmd(t_parsing *parsing, t_count count, int i);
-int			handle_empty_cmd(t_parsing *parsing, t_count count, int i);
+void		handle_heredoc_no_cmd(t_parsing *parsing, int i);
+void		handle_append_no_cmd(t_parsing *parsing, int i);
+void		handle_infile_no_cmd(t_parsing *parsing, int i);
+void		handle_outile_no_cmd(t_parsing *parsing, int i);
+int			handle_empty_cmd(t_parsing *parsing, int i);
 void		manage_pipes(t_parsing *parsing, int (**pipes)[2], int i);
-void		handle_infile_cmd(t_parsing *parsing, t_count count, int i);
-void		process_heredoc_input(char *delimiter, int heredoc_pipe);
-void		handle_heredoc_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_outfile_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_append_cmd(t_parsing *parsing, t_count count, int i);
-void		handle_exec(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2]);
-void		handle_child_process(t_parsing *parsing, t_count count,
-				int (**pipes)[2], int i);
+void		handle_infile_cmd(t_parsing *parsing, int i);
+void		process_heredoc_input(char *delimiter,
+				int heredoc_pipe, char **env);
+void		handle_heredoc_cmd(t_parsing *parsing, int i,
+				t_env *env, int (**pipes)[2]);
+void		handle_outfile_cmd(t_parsing *parsing, int i);
+void		handle_append_cmd(t_parsing *parsing, int i);
+void		handle_exec(t_parsing *parsing, t_env *envp,
+				int i, int (*pipes)[2]);
+void		handle_child_process(t_parsing *parsing,
+				int (**pipes)[2], int i, t_env *env);
 int			wait_and_cleanup(int (**pipes)[2], t_parsing *parsing);
 int			check_built_in(t_parsing *parsing, t_env *envp, int i,
 				int (*pipes)[2]);
@@ -214,5 +218,9 @@ int			handle_cd_home(t_cd *cd);
 int			print_echo(char **para, int i);
 int			is_valid_option(char *s);
 void		sort_ascii(char **tab);
+void		handler_heredoc_cmd(int sig);
+int			expand_string_if_needed_heredoc(char **string, char **env);
+void		free_all_heredoc(t_parsing *parsing, t_env *env, int (**pipes)[2]);
+void		free_all(t_parsing *parsing, t_env *env, int (*pipes)[2]);
 
 #endif

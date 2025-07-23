@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int    count_export(t_env *env, char *new_var, int j)
+int	count_export(t_env *env, char *new_var, int j)
 {
 	int	count;
 	int	exist;
@@ -30,7 +30,7 @@ int    count_export(t_env *env, char *new_var, int j)
 	return (count);
 }
 
-int    exist_in_env(t_env *env, char *new_var, int j)
+int	exist_in_env(t_env *env, char *new_var, int j)
 {
 	int	i;
 
@@ -73,12 +73,11 @@ void	sort_ascii(char **tab)
 	}
 }
 
-
-char    **export_tab(char **tab, t_env *env, char *new_var, int j)
+char	**export_tab(char **tab, t_env *env, char *new_var, int j)
 {
-    int	i;
+	int	i;
 
-    i = -1;
+	i = -1;
 	while (env->export[++i])
 	{
 		if (ft_strncmp_export(env->export[i], new_var, j + 1) == 0)

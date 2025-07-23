@@ -87,11 +87,11 @@ char	*extract_env_name(char *string, int *idx)
 	return (name);
 }
 
-int    copy_before_var(char *string, char *result)
+int	copy_before_var(char *string, char *result)
 {
-	int        i;
-	int        j;
-	char    quote;
+	int		i;
+	int		j;
+	char	quote;
 
 	i = 0;
 	j = 0;
