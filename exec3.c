@@ -16,13 +16,13 @@ void	handle_heredoc_no_cmd(t_parsing *parsing, t_count count, int i)
 {
 	char	*line;
 
-	while (parsing[i].heredoc[count.heredoc] && g_child_pid == 0)
+	while (parsing[i].heredoc[count.heredoc])
 	{
 		signal(SIGINT, handler_heredoc);
 		while (1)
 		{
 			line = readline("> ");
-			if (g_child_pid == 1 || !line)
+			if (g_child_pid == 130 || !line)
 			{
 				free(line);
 				break ;

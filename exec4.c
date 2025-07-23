@@ -15,10 +15,10 @@
 int	handle_empty_cmd(t_parsing *parsing, t_count count, int i)
 {
 	handle_heredoc_no_cmd(parsing, count, i);
-	if (g_child_pid == 1)
+	if (g_child_pid == 130)
 	{
-		g_child_pid = 0;
 		parsing[0].exit_status = 130;
+		g_child_pid = 0;
 		return (130);
 	}
 	handle_append_no_cmd(parsing, count, i);
@@ -92,6 +92,7 @@ void	handle_heredoc_cmd(t_parsing *parsing, t_count count, int i)
 
 	if (parsing[i].heredoc[count.heredoc])
 	{
+		signal(SIGQUIT, SIG_IGN);
 		while (parsing[i].heredoc[count.heredoc])
 		{
 			if (pipe(heredoc_pipe) == -1)

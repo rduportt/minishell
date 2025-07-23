@@ -20,7 +20,7 @@ int	check_built_in(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2])
 		return (1);
 	}
 	signal(SIGINT, SIG_IGN);
-	g_child_pid = fork();
+	parsing[0].pid = fork();
 	return (0);
 }
 
@@ -43,9 +43,9 @@ int	process_command(t_parsing *parsing, t_env *envp, int (*pipes)[2], int i)
 		return (handle_empty_cmd(parsing, count, i));
 	if (check_built_in(parsing, envp, i, pipes) == 1)
 		return (1);
-	if (g_child_pid == -1)
+	if (parsing[0].pid == -1)
 		return (-1);
-	if (g_child_pid == 0)
+	if (parsing[0].pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
@@ -112,8 +112,9 @@ int	prepare_commands(t_parsing *parsing, t_env *envp)
 	parsing[i].cmd_path = NULL;
 	while (parsing[i].cmd != NULL)
 	{
-		g_child_pid = 0;
+		parsing[0].pid = 0;
 		parsing[i].cmd_path = NULL;
+		
 		parsing[i].builtin_code = is_built_in(parsing[i].cmd);
 		if (parsing[i].builtin_code == 0)
 		{

@@ -81,7 +81,8 @@ void	wait_for_children(t_parsing *parsing, int i, int status)
 			{
 				sig = WTERMSIG(status);
 				parsing[0].exit_status = 128 + sig;
-				if (sig == SIGQUIT)
+				if (sig == SIGQUIT && ft_strcmp(parsing[i].cmd, "cat") == 0
+					&& parsing[i].heredoc[0] == NULL)
 					write(STDERR_FILENO, "Quit (core dumped)\n", 20);
 				else if (sig == SIGINT)
 					write(STDERR_FILENO, "\n", 1);

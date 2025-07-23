@@ -18,8 +18,8 @@ void	handler_sigint(int num)
 		write (STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		if (g_child_pid == 0)
-			rl_redisplay();
+		rl_redisplay();
+		g_child_pid = 130;
 	}
 }
 
@@ -27,7 +27,7 @@ void	handler_heredoc(int num)
 {	
 	if (num == SIGINT)
 	{
-		g_child_pid = 1;
+		g_child_pid = 130;
 		rl_done = 1;
 		printf("\nMinishell>");
 	}

@@ -111,8 +111,11 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell> ");
 		if (!input)
 			exit(free_and_exit(env));
+		if (g_child_pid == 130)
+			ft_export_questionmark(env, 130);
 		if (ft_strcmp(input, "") != 0)
 			process_input(input, env);
+
 		free(input);
 	}
 	return (0);
