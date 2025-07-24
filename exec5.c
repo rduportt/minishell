@@ -85,6 +85,7 @@ void	handle_child_process(t_parsing *parsing,
 		close((*pipes)[i - 1][0]);
 	}
 	handle_infile_cmd(parsing, i);
+	g_child_pid = 0;
 	handle_heredoc_cmd(parsing, i, env, pipes);
 	if (i < parsing[0].count - 1)
 	{
