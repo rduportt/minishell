@@ -113,12 +113,7 @@ void	handle_heredoc_cmd(t_parsing *parsing, int i,
 				heredoc_pipe[1], env->env);
 			signal(SIGINT, SIG_DFL);
 			if (g_child_pid == 130)
-			{
-				free_all_heredoc(parsing, env, pipes);
-				close(heredoc_pipe[0]);
-				close(heredoc_pipe[1]);
-				exit(130);
-			}
+				free_all_heredoc(parsing, env, pipes, heredoc_pipe);
 			parsing[0].countt.heredoc++;
 		}
 		close(heredoc_pipe[1]);

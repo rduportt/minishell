@@ -220,7 +220,8 @@ int			is_valid_option(char *s);
 void		sort_ascii(char **tab);
 void		handler_heredoc_cmd(int sig);
 int			expand_string_if_needed_heredoc(char **string, char **env);
-void		free_all_heredoc(t_parsing *parsing, t_env *env, int (**pipes)[2]);
+void		free_all_heredoc(t_parsing *parsing, t_env *env,
+				int (**pipes)[2], int heredoc_pipe[2]);
 void		free_all(t_parsing *parsing, t_env *env, int (*pipes)[2]);
 
 #endif
