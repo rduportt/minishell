@@ -111,4 +111,3 @@ void	update_count(t_count *count, int type)
 	else if (type == T_REDIR_HEREDOC)
 		count->heredoc++;
 }
-
