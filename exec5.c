@@ -65,10 +65,13 @@ void	handle_exec(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2])
 			free_all(parsing, envp, pipes);
 			exit(127);
 		}
-		parsing[0].exit_status = execve(parsing[i].cmd_path,
-				parsing[i].arg, envp->env);
-		perror("execve");
-		exit(parsing[i].exit_status);
+		else
+		{
+			parsing[0].exit_status = execve(parsing[i].cmd_path,
+					parsing[i].arg, envp->env);
+			perror("execve");
+			exit(parsing[i].exit_status);
+		}
 	}
 }
 

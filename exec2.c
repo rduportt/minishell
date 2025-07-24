@@ -41,8 +41,6 @@ t_env	*exec_builtin(t_parsing *parsing, t_env *env, int i, int (*pipes)[2])
 		parsing->exit_status = echo(parsing->arg);
 	else if (parsing->builtin_code == 4)
 		parsing->exit_status = display_env(env->env);
-	else if (parsing->builtin_code == 5 && !parsing[i].arg[1])
-		parsing->exit_status = display_env(env->export);
 	else if (parsing->builtin_code == 5)
 		env = ft_export(env, &parsing->arg[1], parsing);
 	else if (parsing->builtin_code == 6)
@@ -100,6 +98,8 @@ int	init_pipes(int (**pipes)[2], t_parsing *parsing)
 	int	i;
 
 	i = -1;
+	if (parsing[0].count <= 0)
+		return (-1);
 	*pipes = malloc(2 * sizeof(int) * (parsing[0].count - 1));
 	if (!*pipes)
 		return (-1);

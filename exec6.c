@@ -14,8 +14,7 @@
 
 int	check_built_in(t_parsing *parsing, t_env *envp, int i, int (*pipes)[2])
 {
-	if ((parsing[i].builtin_code == 1 || parsing[i].builtin_code > 5)
-		|| (parsing[i].builtin_code == 5 && parsing[i].arg[1]))
+	if ((parsing[i].builtin_code == 1 || parsing[i].builtin_code >= 5))
 	{
 		envp = exec_builtin(&parsing[i], envp, i, pipes);
 		return (1);
@@ -50,15 +49,12 @@ int	process_command(t_parsing *parsing, t_env *envp, int (*pipes)[2], int i)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		handle_child_process(parsing, &pipes, i, envp);
-		if ((parsing[i].builtin_code <= 4 || (parsing[i].builtin_code == 5
-					&& !parsing[i].arg[1])) && parsing[i].builtin_code != 0)
+		if (parsing[i].builtin_code <= 4 && parsing[i].builtin_code != 0)
 		{
 			envp = exec_builtin(&parsing[i], envp, i, pipes);
 			buffer = parsing[i].exit_status;
 			free_all(parsing, envp, pipes);
 			exit(buffer);
-			rl_on_new_line();
-			rl_redisplay();
 		}
 		else
 			handle_exec(parsing, envp, i, pipes);

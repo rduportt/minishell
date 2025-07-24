@@ -94,7 +94,6 @@ int	display_env(char **env)
 	int	i;
 
 	i = 0;
-	write(STDOUT_FILENO, "\n", 1);
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "?=", 2) != 0)
