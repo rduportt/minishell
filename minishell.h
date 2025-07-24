@@ -88,6 +88,15 @@ typedef struct s_cd
 	int		ret;
 }	t_cd;
 
+typedef struct s_export
+{
+	int		i;
+	int		var_i;
+	int		count;
+	char	**tab;
+	int		j;
+}	t_export;
+
 typedef struct parsing
 {
 	char	*cmd;

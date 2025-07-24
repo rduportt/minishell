@@ -56,32 +56,28 @@ t_env	*ft_export_questionmark(t_env *env, int exit_code)
 
 t_env	*ft_export(t_env *env, char **new_var, t_parsing *parsing)
 {
-	int		i;
-	int		var_i;
-	int		count;
-	char	**tab;
-	int		j;
+	t_export	ex;
 
-	i = -1;
+	ex.i = -1;
 	if (handle_error(new_var[0], env, parsing))
 		return (env);
-	while (new_var[++i])
+	while (new_var[++ex.i])
 	{
-		if (handle_error(new_var[i], env, parsing))
+		if (handle_error(new_var[ex.i], env, parsing))
 			return (env);
-		var_i = 0;
-		while (new_var[i][var_i] && (ft_isalpha(new_var[i][var_i])
-			|| ft_isdigit(new_var[i][var_i])))
-			var_i++;
-		j = var_i;
-		env = handle_new_var(env, new_var[i], &var_i);
-		count = count_export(env, new_var[i], j);
-		tab = malloc(sizeof(char *) * (count + 3));
-		if (!tab)
+		ex.var_i = 0;
+		while (new_var[ex.i][ex.var_i] && (ft_isalpha(new_var[ex.i][ex.var_i])
+			|| ft_isdigit(new_var[ex.i][ex.var_i])))
+			ex.var_i++;
+		ex.j = ex.var_i;
+		env = handle_new_var(env, new_var[ex.i], &ex.var_i);
+		ex.count = count_export(env, new_var[ex.i], ex.j);
+		ex.tab = malloc(sizeof(char *) * (ex.count + 3));
+		if (!ex.tab)
 			return (NULL);
-		tab = export_tab(tab, env, new_var[i], j);
+		ex.tab = export_tab(ex.tab, env, new_var[ex.i], ex.j);
 		free_tab(env->export);
-		env->export = tab;
+		env->export = ex.tab;
 	}
 	return (env);
 }

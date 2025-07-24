@@ -96,33 +96,3 @@ char	**export_tab(char **tab, t_env *env, char *new_var, int j)
 	sort_ascii(tab);
 	return (tab);
 }
-
-int	handle_error(char *new_var, t_env *env, t_parsing *parsing)
-{
-	if (!new_var)
-	{
-		display_env(env->export);
-		return (1);
-	}
-	if (valid_env(new_var) == 1)
-	{
-		parsing->exit_status = 1;
-		printf("minishell: export: %s: not a valid identifier\n", new_var);
-		return (1);
-	}
-	return (0);
-}
-
-t_env	*handle_new_var(t_env *env, char *new_var, int *i)
-{
-	int	j;
-
-	j = *i;
-	if (new_var[*i] == '=')
-	{
-		env->env = ft_new_env(env->env, new_var, ++(*i), j);
-		if (!env->env)
-			return (env);
-	}
-	return (env);
-}

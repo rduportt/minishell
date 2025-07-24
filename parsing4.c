@@ -11,17 +11,11 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*string_env(char *string, char **env)
+int	check_quotes(int i, char *string)
 {
-	char	*env_value;
-	char	*result;
-	int		i;
-	int		j;
-	int		quote;
+	int	quote;
 
 	quote = 0;
-	i = 0;
-	j = 0;
 	while (string[i])
 	{
 		if (string[i] == '\'' && quote == 0)
@@ -32,6 +26,19 @@ char	*string_env(char *string, char **env)
 			break ;
 		i++;
 	}
+	return (i);
+}
+
+char	*string_env(char *string, char **env)
+{
+	char	*env_value;
+	char	*result;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	i = check_quotes(i, string);
 	if (!string[i])
 		return (ft_strdup(string));
 	i++;
@@ -105,23 +112,3 @@ void	update_count(t_count *count, int type)
 		count->heredoc++;
 }
 
-t_parsing	*init_structure(t_token *lexer)
-{
-	t_parsing	*parsing;
-	t_count		count;
-	int			i;
-
-	i = 0;
-	count.cmd = 0;
-	while (lexer[i].type != T_EOF)
-	{
-		if (lexer[i].type == T_PIPE)
-			count.cmd++;
-		i++;
-	}
-	parsing = init_parsing(count.cmd + 1);
-	if (!parsing)
-		return (NULL);
-	prepare_args(parsing, lexer);
-	return (parsing);
-}
